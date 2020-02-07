@@ -16,7 +16,7 @@
                        ColorSelect="_colorPicker_OnColorSelect" />
 
       <Wpf:HuePicker Name="_huePicker"
-                     Width="37" Height="258"
+                     Width="37" Height="256"
                      SelectedHue="0"
                      Canvas.Left="273" Canvas.Top="13"
                      HueHover="_huePicker_OnHueHover"

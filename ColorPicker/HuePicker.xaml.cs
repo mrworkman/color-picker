@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -12,12 +13,19 @@ namespace MrWorkman.Wpf {
    /// Interaction logic for HueSlider.xaml
    /// </summary>
    public partial class HuePicker : UserControl {
+      public const int Rows = 256;
+      private const int Degrees = 360;
 
       private bool _pickerMousePressed;
       private bool _thumbMousePressed;
 
       private int _selectedHue = 0;
       private int _selectionRow = 255;
+
+      public HuePicker() {
+         InitializeComponent();
+         InitializeCanvas();
+      }
 
       public class HueSelectionEventArgs : EventArgs {
          public int Hue { get; internal set; }
@@ -27,23 +35,24 @@ namespace MrWorkman.Wpf {
       public EventHandler<HueSelectionEventArgs> HueHover { get; set; }
       public EventHandler<HueSelectionEventArgs> HueSelect { get; set; }
 
-      public HuePicker() {
-         InitializeComponent();
-         InitializeCanvas();
-      }
-
       public int SelectedHue {
          get => _selectedHue;
          set {
             _selectedHue = value;
-            _selectionRow = TranslateHueToRow(_selectedHue);
 
-            TriggerSelectionEvent(_pickerCanvas);
+            if (_selectedHue > Degrees - 1 || _selectedHue < 0) {
+               throw new ArgumentOutOfRangeException(
+                  nameof(SelectedHue), _selectedHue, $"Hue must be between 0 and {Degrees - 1}."
+               );
+            }
+
+            _selectionRow = GetRowFromHueValue(_selectedHue);
+
+            UpdateSelection(_selectionRow, RowToMouseCoord(_selectionRow));
+
+            TriggerSelectionEvent(this);
          }
       }
-
-      private int TranslateHueToRow(int hue) =>
-         (int) (_pickerCanvas.ActualHeight - (hue / 359.0 * _pickerCanvas.ActualHeight));
 
       private double GetBoundedMouseCoord(double y) {
          if (y < 0) {
@@ -51,25 +60,29 @@ namespace MrWorkman.Wpf {
          }
 
          if (y >= _pickerCanvas.ActualHeight) {
-            y = _pickerCanvas.ActualHeight;
+            y = _pickerCanvas.ActualHeight - 1;
          }
 
          return y;
       }
 
-      private Color GetHueColor(int hue) {
+      private int GetHueValueFromRow(int row) => (int) ((double) row / (Rows - 1) * (Degrees - 1));
+
+      private Color GetHueColorFromValue(int hue) {
          var c = GetRgbBytes(hue, 1.0, 1.0);
          return Color.FromRgb(c[0], c[1], c[2]);
       }
 
+      private int GetRowFromHueValue(int hue) => (int) ((double) hue / (Degrees - 1) * (Rows - 1));
+
       private void InitializeCanvas() {
          var stride = 3;
-         var pixels = new byte[256 * 3];
+         var pixels = new byte[Rows * 3];
 
-         for (int row = 0; row < 256; row++) {
+         for (int row = 0; row < Rows; row++) {
             var o = (row * 3);
 
-            var hue = (int) ((255 - row) / 256.0 * 360);
+            var hue = (int) ((double) (Rows - 1 - row) / Rows * Degrees);
 
             var bytes = GetRgbBytes(hue, 1.0, 1.0);
             pixels[o + 0] = bytes[0];
@@ -77,42 +90,45 @@ namespace MrWorkman.Wpf {
             pixels[o + 2] = bytes[2];
          }
 
-         var bitmap = new WriteableBitmap(1, 256, 96, 96, PixelFormats.Rgb24, null);
-         bitmap.WritePixels(new Int32Rect(0, 0, 1, 256), pixels, stride, 0);
+         var bitmap = new WriteableBitmap(1, Rows, 96, 96, PixelFormats.Rgb24, null);
+         bitmap.WritePixels(new Int32Rect(0, 0, 1, Rows), pixels, stride, 0);
          _pickerCanvas.Source = bitmap;
       }
 
-      private double TranslateRowToHue(double y) {
-         var hue = (_pickerCanvas.ActualHeight - y) / _pickerCanvas.ActualHeight * 360;
+      private int MouseCoordToRow(double y) {
+         var row = (int) (_pickerCanvas.ActualHeight - 1 - y / (_pickerCanvas.ActualHeight - 1) * (Rows - 1));
 
-         if (hue < 0) {
-            hue = 0;
-         }
+         Debug.WriteLine($"row: {row}");
 
-         if (hue >= 360) {
-            hue = 359;
-         }
-
-         return hue;
+         return row;
       }
 
-      private void TriggerHoverEvent<T>(T sender, double y) {
+      private double RowToMouseCoord(int row) {
+         var y = _pickerCanvas.ActualHeight - 1 - (double) row / (Rows - 1) * (_pickerCanvas.ActualHeight - 1);
+
+         Debug.WriteLine($"y: {y}");
+
+         return y;
+      }
+
+      private void TriggerHoverEvent<T>(T sender, int row) {
          HueHover?.Invoke(sender, new HueSelectionEventArgs {
-            Hue = (int) TranslateRowToHue(y),
-            HueColor = GetHueColor((int) TranslateRowToHue(y))
+            Hue = GetHueValueFromRow(row),
+            HueColor = GetHueColorFromValue(GetHueValueFromRow(row))
          });
       }
 
       private void TriggerSelectionEvent<T>(T sender) {
-         HueSelect?.Invoke(_pickerCanvas, new HueSelectionEventArgs {
+         HueSelect?.Invoke(sender, new HueSelectionEventArgs {
             Hue = _selectedHue,
-            HueColor = GetHueColor(_selectedHue)
+            HueColor = GetHueColorFromValue(_selectedHue)
          });
       }
 
-      private void UpdateSelection(double y) {
-         _selectionRow = (int) y;
-         _selectedHue = (int) TranslateRowToHue(y);
+      private void UpdateSelection(int row, double y) {
+         _selectionRow = row;
+         _selectedHue = GetHueValueFromRow(row);
+
          Canvas.SetTop(_thumb1, y - 3);
       }
 
@@ -121,12 +137,13 @@ namespace MrWorkman.Wpf {
          var position = e.GetPosition(sender as IInputElement);
 
          var y = GetBoundedMouseCoord(position.Y);
+         var row = MouseCoordToRow(y);
 
-         TriggerHoverEvent(sender, y);
+         TriggerHoverEvent(sender, row);
 
          if (_pickerMousePressed) {
-            UpdateSelection(y);
-            TriggerSelectionEvent(sender);
+            UpdateSelection(row, y);
+            TriggerSelectionEvent(this);
          }
       }
 
@@ -136,17 +153,21 @@ namespace MrWorkman.Wpf {
          element?.CaptureMouse();
          _pickerMousePressed = true;
 
-         UpdateSelection(GetBoundedMouseCoord(e.GetPosition(element).Y));
-         TriggerSelectionEvent(sender);
+         var y = GetBoundedMouseCoord(e.GetPosition(element).Y);
+         var row = MouseCoordToRow(y);
+
+         UpdateSelection(row, y);
+         TriggerSelectionEvent(this);
       }
+
       private void _pickerCanvas_OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e) {
          _pickerMousePressed = false;
          (sender as IInputElement)?.ReleaseMouseCapture();
       }
 
       private void _pickerCanvas_OnLoaded(object sender, RoutedEventArgs e) {
-         _selectionRow = TranslateHueToRow(_selectedHue);
-         UpdateSelection(_selectionRow);
+         _selectionRow = GetRowFromHueValue(_selectedHue);
+         UpdateSelection(_selectionRow, RowToMouseCoord(_selectionRow));
 
          // Fire selection event
          SelectedHue = _selectedHue;
@@ -156,10 +177,11 @@ namespace MrWorkman.Wpf {
          var position = e.GetPosition(_pickerCanvas as IInputElement);
 
          var y = GetBoundedMouseCoord(position.Y);
+         var row = MouseCoordToRow(y);
 
          if (_thumbMousePressed) {
-            UpdateSelection(y);
-            TriggerSelectionEvent(sender);
+            UpdateSelection(row, y);
+            TriggerSelectionEvent(this);
          }
       }
 

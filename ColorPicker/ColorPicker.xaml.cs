@@ -46,10 +46,7 @@ namespace MrWorkman.Wpf {
          set {
             _hue = value;
             InitializeCanvas();
-
-            ColorSelect?.Invoke(this, new ColorSelectionEventArgs {
-               Color = SelectedColor
-            });
+            TriggerSelectionEvent(this);
          }
       }
 
@@ -120,12 +117,22 @@ namespace MrWorkman.Wpf {
             Column = (int) (x / (_pickerCanvas.ActualWidth - 1) * (GridSize - 1))
          };
 
-         Debug.WriteLine($"{cell.Row}, {cell.Column}, x: {x}, y: {y}");
-
          return cell;
       }
 
       private Cell MouseCoordsToCell(Point point) => MouseCoordsToCell(point.X, point.Y);
+
+      private void TriggerHoverEvent<T>(T sender, Cell cell) {
+         ColorHover?.Invoke(sender, new ColorSelectionEventArgs {
+            Color = GetColorFromCell(cell)
+         });
+      }
+
+      private void TriggerSelectionEvent<T>(T sender) {
+         ColorSelect?.Invoke(sender, new ColorSelectionEventArgs {
+            Color = SelectedColor
+         });
+      }
 
       private void UpdateSelection(int row, int column, double x, double y) {
          _selectionRow = row;
@@ -147,16 +154,11 @@ namespace MrWorkman.Wpf {
          position = GetBoundedMouseCoords(position);
          var cell = MouseCoordsToCell(position);
 
-         ColorHover?.Invoke(this, new ColorSelectionEventArgs {
-            Color = GetColorFromCell(cell)
-         });
+         TriggerHoverEvent(this, cell);
 
          if (_mousePressed) {
             UpdateSelection(cell, position);
-
-            ColorSelect?.Invoke(this, new ColorSelectionEventArgs {
-               Color = SelectedColor
-            });
+            TriggerSelectionEvent(this);
          }
       }
 
@@ -171,10 +173,7 @@ namespace MrWorkman.Wpf {
          var cell = MouseCoordsToCell(position);
 
          UpdateSelection(cell, position);
-
-         ColorSelect?.Invoke(this, new ColorSelectionEventArgs {
-            Color = SelectedColor
-         });
+         TriggerSelectionEvent(this);
       }
 
       private void _pickerCanvas_OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e) {
