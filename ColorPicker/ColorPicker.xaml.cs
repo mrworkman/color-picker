@@ -138,11 +138,11 @@ namespace MrWorkman.Wpf {
          _selectionRow = row;
          _selectionCol = column;
 
-         Canvas.SetLeft(_selectionEllipse, x - 7);
-         Canvas.SetTop(_selectionEllipse, y - 7);
+         Canvas.SetLeft(_selectionEllipse, x - 6.5);
+         Canvas.SetTop(_selectionEllipse, y - 6.5);
 
-         Canvas.SetLeft(_selectionEllipse2, x - 8.15);
-         Canvas.SetTop(_selectionEllipse2, y - 8.15);
+         Canvas.SetLeft(_selectionEllipse2, x - 7.65);
+         Canvas.SetTop(_selectionEllipse2, y - 7.65);
       }
 
       private void UpdateSelection(Cell cell, Point point) => UpdateSelection(cell.Row, cell.Column, point.X, point.Y);

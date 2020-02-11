@@ -20,18 +20,17 @@
             Canvas.Left="0"
             Canvas.Top="-4.5"
 
-            Stroke="Black"
+            Stroke="{DynamicResource {x:Static SystemColors.ControlDarkDarkBrushKey}}"
             StrokeThickness="1"
 
             SnapsToDevicePixels="True"
 
             MouseMove="_thumb1_OnMouseMove"
             MouseLeftButtonDown="_thumb1_OnMouseLeftButtonDown"
-            MouseLeftButtonUp="_thumb1_OnMouseLeftButtonUp">
-            <Polygon.Fill>
-               <SolidColorBrush Color="White" />
-            </Polygon.Fill>
-         </Polygon>
+            MouseLeftButtonUp="_thumb1_OnMouseLeftButtonUp"
+
+            Fill="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"
+         />
       </Canvas>
 
       <Image Name="_pickerCanvas"
