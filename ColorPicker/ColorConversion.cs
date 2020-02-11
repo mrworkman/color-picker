@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MrWorkman.Wpf {
    public static class ColorConversion {
@@ -60,6 +56,54 @@ namespace MrWorkman.Wpf {
          B = (byte) ((Bp + m) * 255);
 
          return new[] { R, G, B };
+      }
+
+      [SuppressMessage("ReSharper", "InconsistentNaming")]
+      [SuppressMessage("ReSharper", "CommentTypo")]
+      public static void GetHsv(byte[] bytes, out int H, out double S, out double V) {
+         if (bytes == null || bytes.Length != 3) {
+            throw new ArgumentException("Byte array needs to be 3 bytes long.", nameof(bytes));
+         }
+
+         byte R = 0, G = 0, B = 0;
+         double Rp = 0, Gp = 0, Bp = 0;
+
+         R = bytes[0];
+         G = bytes[1];
+         B = bytes[2];
+
+         Rp = R / 255.0;
+         Gp = G / 255.0;
+         Bp = B / 255.0;
+
+         double Cmax = Math.Max(Rp, Math.Max(Gp, Bp));
+         double Cmin = Math.Min(Rp, Math.Min(Gp, Bp));
+         double delta = Cmax - Cmin;
+
+         const double tolerance = 1e-4;
+
+         // Value.
+         V = Cmax;
+
+         // Saturation.
+         if (Math.Abs(Cmax) > tolerance) { // i.e. Cmax != 0
+            S = delta / Cmax;
+         } else {
+            S = 0;
+         }
+
+         H = 0;
+
+         // Hue.
+         if (Math.Abs(delta) > tolerance) { // i.e. delta != 0
+            if (Math.Abs(Cmax - Rp) < tolerance) { // i.e. Cmax == R'
+               H = (int) (60 * ((Gp - Bp) / delta) % 6);
+            } else if (Math.Abs(Cmax - Gp) < tolerance) { // i.e. Cmax == G'
+               H = (int) (60 * ((Bp - Rp) / delta) + 2);
+            } else if (Math.Abs(Cmax - Bp) < tolerance) { // i.e. Cmax == B'
+               H = (int) (60 * ((Rp - Gp) / delta) + 4);
+            }
+         }
       }
    }
 }
