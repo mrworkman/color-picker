@@ -5,26 +5,33 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:MrWorkman.Wpf"
              mc:Ignorable="d"
-             d:DesignHeight="258" d:DesignWidth="37">
+             d:DesignHeight="258" d:DesignWidth="35">
    <Grid>
       <Grid.ColumnDefinitions>
-         <ColumnDefinition />
-         <ColumnDefinition Width="26" />
+         <ColumnDefinition Width="10" />
+         <ColumnDefinition Width="25" />
       </Grid.ColumnDefinitions>
 
       <Canvas Grid.Column="0">
-         <Image
+         <Polygon Points="0,0 3,0 8,4.5 3,9 0,9"
             Name="_thumb1"
-            Canvas.Left="1"
-            Canvas.Top="-3"
-            Width="9" Height="9"
-            Source="Resources/handle.png"
-            RenderOptions.BitmapScalingMode="Fant"
             Cursor="SizeNS"
+
+            Canvas.Left="0"
+            Canvas.Top="-4.5"
+
+            Stroke="Black"
+            StrokeThickness="1"
+
+            SnapsToDevicePixels="True"
+
             MouseMove="_thumb1_OnMouseMove"
             MouseLeftButtonDown="_thumb1_OnMouseLeftButtonDown"
-            MouseLeftButtonUp="_thumb1_OnMouseLeftButtonUp"
-         />
+            MouseLeftButtonUp="_thumb1_OnMouseLeftButtonUp">
+            <Polygon.Fill>
+               <SolidColorBrush Color="White" />
+            </Polygon.Fill>
+         </Polygon>
       </Canvas>
 
       <Image Name="_pickerCanvas"

@@ -129,7 +129,7 @@ namespace MrWorkman.Wpf {
          _selectionRow = row;
          _selectedHue = GetHueValueFromRow(row);
 
-         Canvas.SetTop(_thumb1, y - 3);
+         Canvas.SetTop(_thumb1, y - 4.3);
       }
 
       #region Event Handlers
