@@ -1,0 +1,36 @@
+﻿<UserControl x:Class="MrWorkman.Wpf.ColorSwatches"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:MrWorkman.Wpf"
+             mc:Ignorable="d" Width="313" Height="172" MaxWidth="313" MaxHeight="172" MinWidth="313" MinHeight="172">
+   <ListView Name="_listView"
+             Width="313"
+             Height="172"
+             ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+             ScrollViewer.VerticalScrollBarVisibility="Disabled" SelectionChanged="_listView_SelectionChanged" >
+
+      <ListView.ItemContainerStyle>
+         <Style TargetType="ListViewItem">
+            <Setter Property="Padding" Value="1"/>
+            <Setter Property="Margin" Value="0"/>
+            <Setter Property="BorderThickness" Value="0.5"/>
+         </Style>
+      </ListView.ItemContainerStyle>
+
+      <ListView.ItemsPanel>
+         <ItemsPanelTemplate>
+            <WrapPanel Orientation="Vertical"
+                       Height="{Binding ActualHeight, ElementName=_listView}"
+                       Width="{Binding ActualWidth, ElementName=_listView}" />
+         </ItemsPanelTemplate>
+      </ListView.ItemsPanel>
+
+      <ListView.ItemTemplate>
+         <DataTemplate>
+            <Rectangle Fill="{Binding}" Width="25" Height="25" Margin="0,0,0,0" />
+         </DataTemplate>
+      </ListView.ItemTemplate>
+   </ListView>
+</UserControl>

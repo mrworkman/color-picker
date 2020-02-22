@@ -34,10 +34,6 @@ namespace MrWorkman.Wpf {
          InitializeCanvas();
       }
 
-      public class ColorSelectionEventArgs : EventArgs {
-         public Color Color { get; internal set; }
-      }
-
       public EventHandler<ColorSelectionEventArgs> ColorHover { get; set; }
       public EventHandler<ColorSelectionEventArgs> ColorSelect { get; set; }
 
@@ -52,6 +48,23 @@ namespace MrWorkman.Wpf {
 
       public Color SelectedColor {
          get => GetColorFromSelectionCoords();
+         set {
+            var color = value;
+            var colorBytes = new[] { color.R, color.G, color.B };
+
+            GetHsv(colorBytes, out var H, out var S, out var V);
+
+            Hue = H;
+
+            UpdateSelection(
+               255 - (int) (V * 255.0),
+               (int) (S * 255.0),
+               S * ActualWidth,
+               ActualHeight - V * ActualHeight
+            );
+
+            TriggerSelectionEvent(this);
+         }
       }
 
       private Point GetBoundedMouseCoords(Point p) {

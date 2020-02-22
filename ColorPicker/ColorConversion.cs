@@ -80,7 +80,7 @@ namespace MrWorkman.Wpf {
          double Cmin = Math.Min(Rp, Math.Min(Gp, Bp));
          double delta = Cmax - Cmin;
 
-         const double tolerance = 1e-4;
+         const double tolerance = 1e-6;
 
          // Value.
          V = Cmax;
@@ -97,12 +97,16 @@ namespace MrWorkman.Wpf {
          // Hue.
          if (Math.Abs(delta) > tolerance) { // i.e. delta != 0
             if (Math.Abs(Cmax - Rp) < tolerance) { // i.e. Cmax == R'
-               H = (int) (60 * ((Gp - Bp) / delta) % 6);
+               H = (int) (60 * ((Gp - Bp) / delta % 6));
             } else if (Math.Abs(Cmax - Gp) < tolerance) { // i.e. Cmax == G'
-               H = (int) (60 * ((Bp - Rp) / delta) + 2);
+               H = (int) (60 * (((Bp - Rp) / delta) + 2));
             } else if (Math.Abs(Cmax - Bp) < tolerance) { // i.e. Cmax == B'
-               H = (int) (60 * ((Rp - Gp) / delta) + 4);
+               H = (int) (60 * (((Rp - Gp) / delta) + 4));
             }
+         }
+
+         if (H < 0) {
+            H += 360;
          }
       }
    }

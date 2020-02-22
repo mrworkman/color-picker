@@ -27,11 +27,6 @@ namespace MrWorkman.Wpf {
          InitializeCanvas();
       }
 
-      public class HueSelectionEventArgs : EventArgs {
-         public int Hue { get; internal set; }
-         public Color HueColor { get; internal set; }
-      }
-
       public EventHandler<HueSelectionEventArgs> HueHover { get; set; }
       public EventHandler<HueSelectionEventArgs> HueSelect { get; set; }
 
@@ -97,17 +92,11 @@ namespace MrWorkman.Wpf {
 
       private int MouseCoordToRow(double y) {
          var row = (int) (_pickerCanvas.ActualHeight - 1 - y / (_pickerCanvas.ActualHeight - 1) * (Rows - 1));
-
-         Debug.WriteLine($"row: {row}");
-
          return row;
       }
 
       private double RowToMouseCoord(int row) {
          var y = _pickerCanvas.ActualHeight - 1 - (double) row / (Rows - 1) * (_pickerCanvas.ActualHeight - 1);
-
-         Debug.WriteLine($"y: {y}");
-
          return y;
       }
 

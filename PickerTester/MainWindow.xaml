@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:PickerTester"
         xmlns:Wpf="clr-namespace:MrWorkman.Wpf;assembly=MrWorkman.Wpf.ColorPicker" x:Class="PickerTester.MainWindow"
         mc:Ignorable="d"
-        Title="MainWindow" Height="321.8" Width="520">
+        Title="MainWindow" Height="348.2" Width="667.2" WindowStartupLocation="CenterScreen">
    <Canvas>
       <Wpf:ColorPicker Name="_colorPicker"
                        Width="256" Height="256"
@@ -32,6 +32,12 @@
       <Label Name="_selectedHueLabel"  Content="Label" Canvas.Left="416" Canvas.Top="39" Width="80"/>
       <Label Name="_selectedColorLabel"  Content="Label" Canvas.Left="416" Canvas.Top="91" Width="80"/>
 
-      <!--<Slider Name="_colorSlider" Minimum="0" Maximum="359" Margin="10,271,526,128" />-->
+      <Wpf:ColorSwatches Name="_colorSwatches"
+                         Width="100"
+                         Height="100"
+                         Canvas.Left="324"
+                         Canvas.Top="122"
+                         ColorSelected="_colorSwatches_OnColorSelected" />
+
    </Canvas>
 </Window>

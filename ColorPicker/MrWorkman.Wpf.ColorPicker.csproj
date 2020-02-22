@@ -58,15 +58,24 @@
       <DependentUpon>ColorPicker.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="ColorSwatches.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="HuePicker.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ColorSelectionEventArgs.cs" />
+    <Compile Include="ColorSwatches.xaml.cs">
+      <DependentUpon>ColorSwatches.xaml</DependentUpon>
+    </Compile>
     <Compile Include="HuePicker.xaml.cs">
       <DependentUpon>HuePicker.xaml</DependentUpon>
     </Compile>
+    <Compile Include="HueSelectionEventArgs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
