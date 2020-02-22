@@ -53,4 +53,4 @@ using System.Windows;
 [assembly: AssemblyFileVersion("0.1.1.0")]
 
 // Major.Minor.Revision
-[assembly: AssemblyInformationalVersion("0.1.0")]
+[assembly: AssemblyInformationalVersion("0.1.0-PRERELEASE")]

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package >
+  <metadata>
+    <id>$id$</id>
+    <version>$version$</version>
+    <title>$title$</title>
+    <authors>$author$</authors>
+    <owners>$author$</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <license type="expression">GPL-3.0-only</license>
+    <projectUrl>https://github.com/mrworkman/color-picker</projectUrl>
+    <iconUrl>https://raw.githubusercontent.com/mrworkman/color-picker/master/icon.png</iconUrl>
+    <description>$description$</description>
+    <releaseNotes>
+      Pre-release.
+    </releaseNotes>
+    <copyright>Copyright 2020</copyright>
+    <tags>color colour colorpicker colourpicker picker</tags>
+
+    <dependencies>
+      <group targetFramework=".NETFramework4.6.1" />
+    </dependencies>
+
+  </metadata>
+</package>
