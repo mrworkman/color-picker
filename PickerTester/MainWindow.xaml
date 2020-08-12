@@ -4,40 +4,48 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PickerTester"
-        xmlns:Wpf="clr-namespace:MrWorkman.Wpf;assembly=MrWorkman.Wpf.ColorPicker" x:Class="PickerTester.MainWindow"
+        xmlns:Wpf="clr-namespace:MrWorkman.Wpf;assembly=MrWorkman.Wpf.ColorPicker"
+        xmlns:Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2"
+        x:Class="PickerTester.MainWindow"
         mc:Ignorable="d"
         Title="MainWindow" Height="348.2" Width="667.2" WindowStartupLocation="CenterScreen">
-   <Canvas>
-      <Wpf:ColorPicker Name="_colorPicker"
+  <Canvas>
+    <Wpf:ColorPicker x:Name="_colorPicker"
                        Width="256" Height="256"
                        Hue="0"
                        Canvas.Left="10" Canvas.Top="13"
                        ColorHover="_colorPicker_OnColorHover"
                        ColorSelect="_colorPicker_OnColorSelect" />
 
-      <Wpf:HuePicker Name="_huePicker"
+    <Wpf:HuePicker x:Name="_huePicker"
                      Width="37" Height="256"
                      SelectedHue="0"
                      Canvas.Left="273" Canvas.Top="13"
                      HueHover="_huePicker_OnHueHover"
                      HueSelect="_huePicker_OnHueSelect" />
 
-      <Label Content="Hovered Colour:" Canvas.Left="315" Canvas.Top="65"/>
-      <Label Content="Hovered Hue:" Canvas.Left="315" Canvas.Top="13"/>
-      <Label Content="Selected Colour:" Canvas.Left="315" Canvas.Top="91"/>
-      <Label Content="Selected Hue:" Canvas.Left="315" Canvas.Top="39"/>
+    <Label Content="Hovered Colour:" Canvas.Left="315" Canvas.Top="65"/>
+    <Label Content="Hovered Hue:" Canvas.Left="315" Canvas.Top="13"/>
+    <Label Content="Selected Colour:" Canvas.Left="315" Canvas.Top="91"/>
+    <Label Content="Selected Hue:" Canvas.Left="315" Canvas.Top="39"/>
 
-      <Label Name="_hoveredHueLabel"  Content="Label" Canvas.Left="416" Canvas.Top="13" Width="80"/>
-      <Label Name="_hoveredColorLabel"  Content="Label" Canvas.Left="416" Canvas.Top="65" Width="80"/>
-      <Label Name="_selectedHueLabel"  Content="Label" Canvas.Left="416" Canvas.Top="39" Width="80"/>
-      <Label Name="_selectedColorLabel"  Content="Label" Canvas.Left="416" Canvas.Top="91" Width="80"/>
+    <Label x:Name="_hoveredHueLabel"  Content="Label" Canvas.Left="416" Canvas.Top="13" Width="80"/>
+    <Label x:Name="_hoveredColorLabel"  Content="Label" Canvas.Left="416" Canvas.Top="65" Width="80"/>
+    <Label x:Name="_selectedHueLabel"  Content="Label" Canvas.Left="416" Canvas.Top="39" Width="80"/>
+    <Label x:Name="_selectedColorLabel"  Content="Label" Canvas.Left="416" Canvas.Top="91" Width="80"/>
 
-      <Wpf:ColorSwatches Name="_colorSwatches"
+    <Wpf:ColorSwatches x:Name="_colorSwatches"
                          Width="100"
                          Height="100"
                          Canvas.Left="324"
                          Canvas.Top="122"
                          ColorSelected="_colorSwatches_OnColorSelected" />
 
-   </Canvas>
+    <Wpf:ColorComboBox Canvas.Left="10" Canvas.Top="269" Width="120" />
+    <Wpf:ColorComboBox Canvas.Left="10" Canvas.Top="291" Width="120" IsEditable="True" />
+
+    <ComboBox Canvas.Left="153" Canvas.Top="284" Width="120" />
+
+
+  </Canvas>
 </Window>
