@@ -26,7 +26,6 @@ namespace MrWorkman.Wpf {
       private const string SwatchesTemplateName = "ColorSwatches";
 
       private Popup _dropdownPickerPopup;
-      private ColorSwatches _colorSwatches;
 
       public static readonly Color DefaultColor = Colors.Black;
 
@@ -140,23 +139,6 @@ namespace MrWorkman.Wpf {
          if (_dropdownPickerPopup != null) {
             _dropdownPickerPopup.Closed += OnPopupClosed;
          }
-
-         if (_colorSwatches != null) {
-            _colorSwatches.ColorSelected -= OnSwatchColorSelected;
-         }
-
-         _colorSwatches = GetTemplateChild(SwatchesTemplateName) as ColorSwatches;
-
-         if (_colorSwatches != null) {
-            _colorSwatches.ColorSelected += OnSwatchColorSelected;
-
-            Items.Clear();
-            foreach (var listViewItem in _colorSwatches._listView.Items) {
-               Items.Add(listViewItem);
-            }
-
-            _colorSwatches.MouseUp += (sender, args) => IsDropDownOpen = false;
-         }
       }
 
       private static void OnLostMouseCapture(object sender, MouseEventArgs e) {
@@ -243,12 +225,5 @@ namespace MrWorkman.Wpf {
       private void OnPopupClosed(object source, EventArgs e) {
          OnDropDownClosed(EventArgs.Empty);
       }
-
-      private void OnSwatchColorSelected(object sender, ColorSelectionEventArgs e) {
-         //Text = e.Color.ToString();
-
-         SelectedItem = "#000000";
-      }
-
    }
 }
