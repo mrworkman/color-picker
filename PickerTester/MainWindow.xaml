@@ -6,9 +6,10 @@
         xmlns:local="clr-namespace:PickerTester"
         xmlns:Wpf="clr-namespace:MrWorkman.Wpf;assembly=MrWorkman.Wpf.ColorPicker"
         xmlns:Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2"
+        xmlns:system="clr-namespace:System;assembly=mscorlib"
         x:Class="PickerTester.MainWindow"
         mc:Ignorable="d"
-        Title="MainWindow" Height="348.2" Width="667.2" WindowStartupLocation="CenterScreen">
+        Title="MainWindow" Height="364.2" Width="667.2" WindowStartupLocation="CenterScreen">
   <Canvas>
     <Wpf:ColorPicker x:Name="_colorPicker"
                        Width="256" Height="256"
@@ -41,11 +42,143 @@
                          Canvas.Top="122"
                          ColorSelected="_colorSwatches_OnColorSelected" />
 
-    <Wpf:ColorComboBox Canvas.Left="10" Canvas.Top="269" Width="120" />
-    <Wpf:ColorComboBox Canvas.Left="10" Canvas.Top="291" Width="120" IsEditable="True" />
+    <Wpf:ColorComboBox Canvas.Left="10" Canvas.Top="279" Width="138">
+      <SolidColorBrush>#ffffffff</SolidColorBrush>
+      <SolidColorBrush>#ffadadad</SolidColorBrush>
+      <SolidColorBrush>#ff828282</SolidColorBrush>
+      <SolidColorBrush>#ff575757</SolidColorBrush>
+      <SolidColorBrush>#ff2b2b2b</SolidColorBrush>
+      <SolidColorBrush>#ff000000</SolidColorBrush>
+      <SolidColorBrush>#ffffffbe</SolidColorBrush>
+      <SolidColorBrush>#ffffff99</SolidColorBrush>
+      <SolidColorBrush>#ffffff4d</SolidColorBrush>
+      <SolidColorBrush>#ffffff00</SolidColorBrush>
+      <SolidColorBrush>#ffb3b300</SolidColorBrush>
+      <SolidColorBrush>#ff666600</SolidColorBrush>
+      <SolidColorBrush>#ffffe7be</SolidColorBrush>
+      <SolidColorBrush>#ffffdb99</SolidColorBrush>
+      <SolidColorBrush>#ffffc14d</SolidColorBrush>
+      <SolidColorBrush>#ffffa500</SolidColorBrush>
+      <SolidColorBrush>#ffb37400</SolidColorBrush>
+      <SolidColorBrush>#ff664200</SolidColorBrush>
+      <SolidColorBrush>#fff6dbc6</SolidColorBrush>
+      <SolidColorBrush>#fff3c6a5</SolidColorBrush>
+      <SolidColorBrush>#ffea9a62</SolidColorBrush>
+      <SolidColorBrush>#ffe06f1f</SolidColorBrush>
+      <SolidColorBrush>#ff9d4e15</SolidColorBrush>
+      <SolidColorBrush>#ff70380f</SolidColorBrush>
+      <SolidColorBrush>#ffffbebe</SolidColorBrush>
+      <SolidColorBrush>#ffff9999</SolidColorBrush>
+      <SolidColorBrush>#ffff4d4d</SolidColorBrush>
+      <SolidColorBrush>#ffff0000</SolidColorBrush>
+      <SolidColorBrush>#ffb30000</SolidColorBrush>
+      <SolidColorBrush>#ff660000</SolidColorBrush>
+      <SolidColorBrush>#ffffd9de</SolidColorBrush>
+      <SolidColorBrush>#ffffb3bf</SolidColorBrush>
+      <SolidColorBrush>#ffff6680</SolidColorBrush>
+      <SolidColorBrush>#ffff1a40</SolidColorBrush>
+      <SolidColorBrush>#ffcc0022</SolidColorBrush>
+      <SolidColorBrush>#ff800015</SolidColorBrush>
+      <SolidColorBrush>#ffffc2ff</SolidColorBrush>
+      <SolidColorBrush>#ffff99ff</SolidColorBrush>
+      <SolidColorBrush>#ffff4dff</SolidColorBrush>
+      <SolidColorBrush>#ffff00ff</SolidColorBrush>
+      <SolidColorBrush>#ffb300b3</SolidColorBrush>
+      <SolidColorBrush>#ff660066</SolidColorBrush>
+      <SolidColorBrush>#ffe1c9f8</SolidColorBrush>
+      <SolidColorBrush>#ffcda5f3</SolidColorBrush>
+      <SolidColorBrush>#ffa862ea</SolidColorBrush>
+      <SolidColorBrush>#ff8a2be2</SolidColorBrush>
+      <SolidColorBrush>#ff6918b4</SolidColorBrush>
+      <SolidColorBrush>#ff410f70</SolidColorBrush>
+      <SolidColorBrush>#ffc2c2ff</SolidColorBrush>
+      <SolidColorBrush>#ff9999ff</SolidColorBrush>
+      <SolidColorBrush>#ff4d4dff</SolidColorBrush>
+      <SolidColorBrush>#ff0000ff</SolidColorBrush>
+      <SolidColorBrush>#ff0000b3</SolidColorBrush>
+      <SolidColorBrush>#ff000066</SolidColorBrush>
+      <SolidColorBrush>#ffbfffff</SolidColorBrush>
+      <SolidColorBrush>#ff99ffff</SolidColorBrush>
+      <SolidColorBrush>#ff4cffff</SolidColorBrush>
+      <SolidColorBrush>#ff00ffff</SolidColorBrush>
+      <SolidColorBrush>#ff00b3b3</SolidColorBrush>
+      <SolidColorBrush>#ff006666</SolidColorBrush>
+      <SolidColorBrush>#ffc2ffc2</SolidColorBrush>
+      <SolidColorBrush>#ff99ff99</SolidColorBrush>
+      <SolidColorBrush>#ff4dff4d</SolidColorBrush>
+      <SolidColorBrush>#ff00ff00</SolidColorBrush>
+      <SolidColorBrush>#ff00b300</SolidColorBrush>
+      <SolidColorBrush>#ff006600</SolidColorBrush>
+    </Wpf:ColorComboBox>
 
-    <ComboBox Canvas.Left="153" Canvas.Top="284" Width="120" />
-
+    <Wpf:ColorComboBox Canvas.Left="10" Canvas.Top="302" IsEditable="True" Width="138" FontFamily="Consolas">
+      <SolidColorBrush>#ffffffff</SolidColorBrush>
+      <SolidColorBrush>#ffadadad</SolidColorBrush>
+      <SolidColorBrush>#ff828282</SolidColorBrush>
+      <SolidColorBrush>#ff575757</SolidColorBrush>
+      <SolidColorBrush>#ff2b2b2b</SolidColorBrush>
+      <SolidColorBrush>#ff000000</SolidColorBrush>
+      <SolidColorBrush>#ffffffbe</SolidColorBrush>
+      <SolidColorBrush>#ffffff99</SolidColorBrush>
+      <SolidColorBrush>#ffffff4d</SolidColorBrush>
+      <SolidColorBrush>#ffffff00</SolidColorBrush>
+      <SolidColorBrush>#ffb3b300</SolidColorBrush>
+      <SolidColorBrush>#ff666600</SolidColorBrush>
+      <SolidColorBrush>#ffffe7be</SolidColorBrush>
+      <SolidColorBrush>#ffffdb99</SolidColorBrush>
+      <SolidColorBrush>#ffffc14d</SolidColorBrush>
+      <SolidColorBrush>#ffffa500</SolidColorBrush>
+      <SolidColorBrush>#ffb37400</SolidColorBrush>
+      <SolidColorBrush>#ff664200</SolidColorBrush>
+      <SolidColorBrush>#fff6dbc6</SolidColorBrush>
+      <SolidColorBrush>#fff3c6a5</SolidColorBrush>
+      <SolidColorBrush>#ffea9a62</SolidColorBrush>
+      <SolidColorBrush>#ffe06f1f</SolidColorBrush>
+      <SolidColorBrush>#ff9d4e15</SolidColorBrush>
+      <SolidColorBrush>#ff70380f</SolidColorBrush>
+      <SolidColorBrush>#ffffbebe</SolidColorBrush>
+      <SolidColorBrush>#ffff9999</SolidColorBrush>
+      <SolidColorBrush>#ffff4d4d</SolidColorBrush>
+      <SolidColorBrush>#ffff0000</SolidColorBrush>
+      <SolidColorBrush>#ffb30000</SolidColorBrush>
+      <SolidColorBrush>#ff660000</SolidColorBrush>
+      <SolidColorBrush>#ffffd9de</SolidColorBrush>
+      <SolidColorBrush>#ffffb3bf</SolidColorBrush>
+      <SolidColorBrush>#ffff6680</SolidColorBrush>
+      <SolidColorBrush>#ffff1a40</SolidColorBrush>
+      <SolidColorBrush>#ffcc0022</SolidColorBrush>
+      <SolidColorBrush>#ff800015</SolidColorBrush>
+      <SolidColorBrush>#ffffc2ff</SolidColorBrush>
+      <SolidColorBrush>#ffff99ff</SolidColorBrush>
+      <SolidColorBrush>#ffff4dff</SolidColorBrush>
+      <SolidColorBrush>#ffff00ff</SolidColorBrush>
+      <SolidColorBrush>#ffb300b3</SolidColorBrush>
+      <SolidColorBrush>#ff660066</SolidColorBrush>
+      <SolidColorBrush>#ffe1c9f8</SolidColorBrush>
+      <SolidColorBrush>#ffcda5f3</SolidColorBrush>
+      <SolidColorBrush>#ffa862ea</SolidColorBrush>
+      <SolidColorBrush>#ff8a2be2</SolidColorBrush>
+      <SolidColorBrush>#ff6918b4</SolidColorBrush>
+      <SolidColorBrush>#ff410f70</SolidColorBrush>
+      <SolidColorBrush>#ffc2c2ff</SolidColorBrush>
+      <SolidColorBrush>#ff9999ff</SolidColorBrush>
+      <SolidColorBrush>#ff4d4dff</SolidColorBrush>
+      <SolidColorBrush>#ff0000ff</SolidColorBrush>
+      <SolidColorBrush>#ff0000b3</SolidColorBrush>
+      <SolidColorBrush>#ff000066</SolidColorBrush>
+      <SolidColorBrush>#ffbfffff</SolidColorBrush>
+      <SolidColorBrush>#ff99ffff</SolidColorBrush>
+      <SolidColorBrush>#ff4cffff</SolidColorBrush>
+      <SolidColorBrush>#ff00ffff</SolidColorBrush>
+      <SolidColorBrush>#ff00b3b3</SolidColorBrush>
+      <SolidColorBrush>#ff006666</SolidColorBrush>
+      <SolidColorBrush>#ffc2ffc2</SolidColorBrush>
+      <SolidColorBrush>#ff99ff99</SolidColorBrush>
+      <SolidColorBrush>#ff4dff4d</SolidColorBrush>
+      <SolidColorBrush>#ff00ff00</SolidColorBrush>
+      <SolidColorBrush>#ff00b300</SolidColorBrush>
+      <SolidColorBrush>#ff006600</SolidColorBrush>
+    </Wpf:ColorComboBox>
 
   </Canvas>
 </Window>

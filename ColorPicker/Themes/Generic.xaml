@@ -5,7 +5,7 @@
 
   <ResourceDictionary.MergedDictionaries>
     <!-- Source="/<AssemblyNameHere>;component/<XamlFileHere>" -->
-    <ResourceDictionary Source="/MrWorkman.Wpf.ColorPicker;component/ColorComboBoxTheme.xaml" />
+    <ResourceDictionary Source="/MrWorkman.Wpf.ColorPicker;component/Themes/ColorComboBoxTheme.xaml" />
   </ResourceDictionary.MergedDictionaries>
 
 </ResourceDictionary>
