@@ -85,16 +85,16 @@ namespace MrWorkman.Wpf {
             x = 0;
          }
 
-         if (x >= _pickerCanvas.ActualWidth) {
-            x = _pickerCanvas.ActualWidth - 1;
+         if (x >= PickerCanvas.ActualWidth) {
+            x = PickerCanvas.ActualWidth - 1;
          }
 
          if (y < 0) {
             y = 0;
          }
 
-         if (y >= _pickerCanvas.ActualHeight) {
-            y = _pickerCanvas.ActualHeight - 1;
+         if (y >= PickerCanvas.ActualHeight) {
+            y = PickerCanvas.ActualHeight - 1;
          }
 
          return new Point(x, y);
@@ -133,13 +133,13 @@ namespace MrWorkman.Wpf {
 
          var bitmap = new WriteableBitmap(GridSize, GridSize, 96, 96, PixelFormats.Rgb24, null);
          bitmap.WritePixels(new Int32Rect(0, 0, GridSize, GridSize), _pixels, stride, 0);
-         _pickerCanvas.Source = bitmap;
+         PickerCanvas.Source = bitmap;
       }
 
       private Cell MouseCoordsToCell(double x, double y) {
          var cell = new Cell {
-            Row = (int) (y / (_pickerCanvas.ActualHeight - 1) * (GridSize - 1)),
-            Column = (int) (x / (_pickerCanvas.ActualWidth - 1) * (GridSize - 1))
+            Row = (int) (y / (PickerCanvas.ActualHeight - 1) * (GridSize - 1)),
+            Column = (int) (x / (PickerCanvas.ActualWidth - 1) * (GridSize - 1))
          };
 
          return cell;
@@ -163,11 +163,11 @@ namespace MrWorkman.Wpf {
          _selectionRow = row;
          _selectionCol = column;
 
-         Canvas.SetLeft(_selectionEllipse, x - 6.5);
-         Canvas.SetTop(_selectionEllipse, y - 6.5);
+         Canvas.SetLeft(SelectionEllipse, x - 6.5);
+         Canvas.SetTop(SelectionEllipse, y - 6.5);
 
-         Canvas.SetLeft(_selectionEllipse2, x - 7.65);
-         Canvas.SetTop(_selectionEllipse2, y - 7.65);
+         Canvas.SetLeft(SelectionEllipse2, x - 7.65);
+         Canvas.SetTop(SelectionEllipse2, y - 7.65);
       }
 
       private void UpdateSelection(Cell cell, Point point) =>
@@ -207,10 +207,6 @@ namespace MrWorkman.Wpf {
 
          (sender as IInputElement)?.ReleaseMouseCapture();
       }
-
-      //private void _pickerCanvas_OnLoaded(object sender, RoutedEventArgs e) {
-      //   UpdateSelection(255, 0, 0.0, _pickerCanvas.ActualHeight);
-      //}
       #endregion
 
    }

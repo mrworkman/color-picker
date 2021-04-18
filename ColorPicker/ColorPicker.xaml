@@ -6,8 +6,8 @@
              xmlns:local="clr-namespace:MrWorkman.Wpf"
              mc:Ignorable="d"
              d:DesignHeight="258" d:DesignWidth="258">
-      <Canvas Name="_canvas" ClipToBounds="True">
-         <Ellipse Name="_selectionEllipse"
+      <Canvas Name="Canvas" ClipToBounds="True">
+         <Ellipse Name="SelectionEllipse"
                   Width="14"
                   Height="14"
                   Stroke="Black"
@@ -16,7 +16,7 @@
                   Canvas.ZIndex="10"
                   IsHitTestVisible="False"
          />
-         <Ellipse Name="_selectionEllipse2"
+         <Ellipse Name="SelectionEllipse2"
                   Width="16"
                   Height="16"
                   Stroke="White"
@@ -27,14 +27,14 @@
                   Canvas.ZIndex="11"
                   IsHitTestVisible="False"
          />
-         <Image Name="_pickerCanvas"
+         <Image Name="PickerCanvas"
                 Margin="0,0,0,0"
                 Stretch="Fill"
                 SnapsToDevicePixels="True"
                 RenderOptions.BitmapScalingMode="Fant"
                 Cursor="Cross"
-                Width="{Binding ActualWidth, ElementName=_canvas}"
-                Height="{Binding ActualHeight, ElementName=_canvas}"
+                Width="{Binding ActualWidth, ElementName=Canvas}"
+                Height="{Binding ActualHeight, ElementName=Canvas}"
                 MouseMove="_pickerCanvas_OnMouseMove"
                 MouseLeftButtonDown="_pickerCanvas_OnMouseLeftButtonDown"
                 MouseLeftButtonUp="_pickerCanvas_OnMouseLeftButtonUp"/>
