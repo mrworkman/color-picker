@@ -16,6 +16,7 @@
 //
 
 using System;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -28,14 +29,18 @@ namespace MrWorkman.Wpf {
    /// Interaction logic for UserControl1.xaml
    /// </summary>
    public partial class ColorPicker : UserControl {
-      public const int GridSize = 256;
+      private const int Dpi = 96;
+      private const int GridSize = 256;
+      private const int Stride = GridSize * 3;
 
-      private readonly byte[] _pixels = new byte[GridSize * GridSize * 3];
+      private readonly WriteableBitmap _bitmap;
+      private readonly byte[] _pixelData = new byte[GridSize * Stride];
+
       private int _hue;
 
       private bool _mousePressed = false;
 
-      private int _selectionRow = 255;
+      private int _selectionRow = 0;
       private int _selectionCol = 0;
 
       private class Cell {
@@ -45,7 +50,10 @@ namespace MrWorkman.Wpf {
 
       public ColorPicker() {
          InitializeComponent();
-         InitializeCanvas();
+
+         PickerCanvas.Source = _bitmap = new WriteableBitmap(
+            GridSize, GridSize, Dpi, Dpi, PixelFormats.Rgb24, null
+         );
       }
 
       public EventHandler<ColorSelectionEventArgs> ColorHover { get; set; }
@@ -55,7 +63,8 @@ namespace MrWorkman.Wpf {
          get => _hue;
          set {
             _hue = value;
-            InitializeCanvas();
+
+            DrawPickerCanvas();
             TriggerSelectionEvent(this);
          }
       }
@@ -100,40 +109,37 @@ namespace MrWorkman.Wpf {
          return new Point(x, y);
       }
 
-      private Color GetColorFromCell(int row, int column) {
-         var o = row * GridSize * 3 + column * 3;
-         var r = _pixels[o + 0];
-         var g = _pixels[o + 1];
-         var b = _pixels[o + 2];
+      private Color GetColor(int row, int column) => ColorModel.ComputeColor(
+         Hue, ComputeSaturation(column), ComputeBrightness(row)
+      );
 
-         return Color.FromRgb(r, g, b);
-      }
+      private Color GetColor(Cell cell) => GetColor(cell.Row, cell.Column);
 
-      private Color GetColorFromCell(Cell cell) => GetColorFromCell(cell.Row, cell.Column);
+      private Color GetColorFromSelectionCoords() => GetColor(_selectionRow, _selectionCol);
 
-      private Color GetColorFromSelectionCoords() => GetColorFromCell(_selectionRow, _selectionCol);
+      private double ComputeBrightness(int row) => (GridSize - row) / (double) GridSize;
+      private double ComputeSaturation(int column) => column / (double) GridSize;
 
-      private void InitializeCanvas() {
-         var stride = GridSize * 3;
-
+      private void DrawPickerCanvas() {
          for (int row = 0; row < GridSize; row++) {
-            for (int column = 0; column < GridSize; column++) {
-               var o = (row * GridSize * 3) + (column * 3);
+            for (int col = 0; col < GridSize; col++) {
 
-               var saturation = column / (double) GridSize;
-               var value = (GridSize - row) / (double) GridSize;
+               // Figure out what colour is represented by the given coordinates.
+               var color = ColorModel.ComputeColor(
+                  Hue, ComputeSaturation(col), ComputeBrightness(row)
+               );
 
-               var color = ColorModel.ComputeColor(Hue, saturation, value);
+               // Update our buffer.
+               var o = row * Stride + col * 3;
+               _pixelData[o + 0] = color.R;
+               _pixelData[o + 1] = color.G;
+               _pixelData[o + 2] = color.B;
 
-               _pixels[o + 0] = color.R;
-               _pixels[o + 1] = color.G;
-               _pixels[o + 2] = color.B;
             }
          }
 
-         var bitmap = new WriteableBitmap(GridSize, GridSize, 96, 96, PixelFormats.Rgb24, null);
-         bitmap.WritePixels(new Int32Rect(0, 0, GridSize, GridSize), _pixels, stride, 0);
-         PickerCanvas.Source = bitmap;
+         // Update the canvas.
+         _bitmap.WritePixels(new Int32Rect(0, 0, GridSize, GridSize), _pixelData, Stride, 0);
       }
 
       private Cell MouseCoordsToCell(double x, double y) {
@@ -149,7 +155,7 @@ namespace MrWorkman.Wpf {
 
       private void TriggerHoverEvent<T>(T sender, Cell cell) {
          ColorHover?.Invoke(sender, new ColorSelectionEventArgs {
-            Color = GetColorFromCell(cell)
+            Color = GetColor(cell)
          });
       }
 
@@ -163,18 +169,18 @@ namespace MrWorkman.Wpf {
          _selectionRow = row;
          _selectionCol = column;
 
-         Canvas.SetLeft(SelectionEllipse, x - 6.5);
-         Canvas.SetTop(SelectionEllipse, y - 6.5);
+         Canvas.SetLeft(InnerSelectionEllipse, x - 6.5);
+         Canvas.SetTop(InnerSelectionEllipse, y - 6.5);
 
-         Canvas.SetLeft(SelectionEllipse2, x - 7.65);
-         Canvas.SetTop(SelectionEllipse2, y - 7.65);
+         Canvas.SetLeft(OuterSelectionEllipse, x - 7.65);
+         Canvas.SetTop(OuterSelectionEllipse, y - 7.65);
       }
 
       private void UpdateSelection(Cell cell, Point point) =>
          UpdateSelection(cell.Row, cell.Column, point.X, point.Y);
 
       #region Event Handlers
-      private void _pickerCanvas_OnMouseMove(object sender, MouseEventArgs e) {
+      private void PickerCanvas_OnMouseMove(object sender, MouseEventArgs e) {
          var position = e.GetPosition(sender as IInputElement);
 
          position = GetBoundedMouseCoords(position);
@@ -188,7 +194,7 @@ namespace MrWorkman.Wpf {
          }
       }
 
-      private void _pickerCanvas_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e) {
+      private void PickerCanvas_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e) {
          var element = sender as IInputElement;
 
          element?.CaptureMouse();
@@ -202,12 +208,15 @@ namespace MrWorkman.Wpf {
          TriggerSelectionEvent(this);
       }
 
-      private void _pickerCanvas_OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e) {
+      private void PickerCanvas_OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e) {
          _mousePressed = false;
 
          (sender as IInputElement)?.ReleaseMouseCapture();
       }
-      #endregion
 
+      private void PickerCanvas_OnLoaded(object sender, RoutedEventArgs e) {
+         DrawPickerCanvas();
+      }
+      #endregion
    }
 }
