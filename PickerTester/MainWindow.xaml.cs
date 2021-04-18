@@ -29,8 +29,8 @@ namespace PickerTester {
       public MainWindow() {
          InitializeComponent();
 
-         _selectedColorLabel.Background = new SolidColorBrush(_colorPicker.SelectedColor);
-         _selectedColorLabel.Content = _colorPicker.SelectedColor.ToString();
+         _selectedColorLabel.Background = new SolidColorBrush(ColorPicker.SelectedColor);
+         _selectedColorLabel.Content = ColorPicker.SelectedColor.ToString();
       }
 
       public void _colorPicker_OnColorHover(object sender, ColorSelectionEventArgs e) {
@@ -49,7 +49,7 @@ namespace PickerTester {
       }
 
       public void _huePicker_OnHueSelect(object sender, HueSelectionEventArgs e) {
-         _colorPicker.Hue = e.Hue;
+         ColorPicker.Hue = e.Hue;
          _selectedHueLabel.Background = new SolidColorBrush(e.HueColor);
          _selectedHueLabel.Content = e.Hue;
       }
@@ -61,7 +61,7 @@ namespace PickerTester {
          //ColorConversion.GetHsv(colorBytes, out var H, out _, out _);
          var hue = (int) new ColorModel(e.Color).Hue;
 
-         _colorPicker.SelectedColor = e.Color;
+         ColorPicker.SelectedColor = e.Color;
          _huePicker.SelectedHue = hue;
 
          _selectedHueLabel.Content = hue;

@@ -11,7 +11,7 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="364.2" Width="667.2" WindowStartupLocation="CenterScreen">
   <Canvas>
-    <Wpf:ColorPicker x:Name="_colorPicker"
+    <Wpf:ColorPicker x:Name="ColorPicker"
                        Width="256" Height="256"
                        SelectedColor="Red"
                        Canvas.Left="10" Canvas.Top="13"
@@ -36,7 +36,7 @@
     <Label x:Name="_selectedHueLabel"  Content="Label" Canvas.Left="416" Canvas.Top="39" Width="80"/>
     <Label x:Name="_selectedColorLabel"  Content="Label" Canvas.Left="416" Canvas.Top="91" Width="80"/>
 
-    <Wpf:ColorSwatches x:Name="_colorSwatches"
+    <Wpf:ColorSwatches x:Name="ColorSwatches"
                          Width="100"
                          Height="100"
                          Canvas.Left="324"

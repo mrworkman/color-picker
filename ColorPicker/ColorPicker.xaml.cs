@@ -40,13 +40,8 @@ namespace MrWorkman.Wpf {
 
       private bool _mousePressed = false;
 
-      private int _selectionRow = 0;
-      private int _selectionCol = 0;
-
-      private class Cell {
-         public int Row { get; set; }
-         public int Column { get; set; }
-      }
+      private int _selectedRow = 0;
+      private int _selectedColumn = 0;
 
       public ColorPicker() {
          InitializeComponent();
@@ -72,17 +67,9 @@ namespace MrWorkman.Wpf {
       public Color SelectedColor {
          get => GetColorFromSelectionCoords();
          set {
-            var colorModel = new ColorModel(value);
+            SelectColor(value);
 
-            Hue = (int) colorModel.Hue;
-
-            UpdateSelection(
-               row:    255 - (int) (colorModel.Brightness * 255.0),
-               column: (int) (colorModel.Saturation * 255.0),
-               x:      colorModel.Saturation * ActualWidth,
-               y:      ActualHeight - colorModel.Brightness * ActualHeight
-            );
-
+            DrawPickerCanvas();
             TriggerSelectionEvent(this);
          }
       }
@@ -109,25 +96,21 @@ namespace MrWorkman.Wpf {
          return new Point(x, y);
       }
 
-      private Color GetColor(int row, int column) => ColorModel.ComputeColor(
-         Hue, ComputeSaturation(column), ComputeBrightness(row)
+      private Color GetColorFromCoords(int row, int column) => ComputeColor(_hue, row, column);
+      private Color GetColorFromSelectionCoords() => GetColorFromCoords(_selectedRow, _selectedColumn);
+
+      private Color ComputeColor(int hue, int row, int column) => ColorModel.ComputeColor(
+         hue:        hue,
+         saturation: column / (double) GridSize,
+         value:      (GridSize - row) / (double) GridSize
       );
-
-      private Color GetColor(Cell cell) => GetColor(cell.Row, cell.Column);
-
-      private Color GetColorFromSelectionCoords() => GetColor(_selectionRow, _selectionCol);
-
-      private double ComputeBrightness(int row) => (GridSize - row) / (double) GridSize;
-      private double ComputeSaturation(int column) => column / (double) GridSize;
 
       private void DrawPickerCanvas() {
          for (int row = 0; row < GridSize; row++) {
             for (int col = 0; col < GridSize; col++) {
 
                // Figure out what colour is represented by the given coordinates.
-               var color = ColorModel.ComputeColor(
-                  Hue, ComputeSaturation(col), ComputeBrightness(row)
-               );
+               var color = ComputeColor(_hue, row, col);
 
                // Update our buffer.
                var o = row * Stride + col * 3;
@@ -142,20 +125,15 @@ namespace MrWorkman.Wpf {
          _bitmap.WritePixels(new Int32Rect(0, 0, GridSize, GridSize), _pixelData, Stride, 0);
       }
 
-      private Cell MouseCoordsToCell(double x, double y) {
-         var cell = new Cell {
-            Row = (int) (y / (PickerCanvas.ActualHeight - 1) * (GridSize - 1)),
-            Column = (int) (x / (PickerCanvas.ActualWidth - 1) * (GridSize - 1))
-         };
+      private int TranslateMouseX(double x) =>
+         (int) (x / (PickerCanvas.ActualWidth - 1) * (GridSize - 1));
 
-         return cell;
-      }
+      private int TranslateMouseY(double y) =>
+         (int) (y / (PickerCanvas.ActualHeight - 1) * (GridSize - 1));
 
-      private Cell MouseCoordsToCell(Point point) => MouseCoordsToCell(point.X, point.Y);
-
-      private void TriggerHoverEvent<T>(T sender, Cell cell) {
+      private void TriggerHoverEvent<T>(T sender, Color color) {
          ColorHover?.Invoke(sender, new ColorSelectionEventArgs {
-            Color = GetColor(cell)
+            Color = color
          });
       }
 
@@ -165,9 +143,22 @@ namespace MrWorkman.Wpf {
          });
       }
 
-      private void UpdateSelection(int row, int column, double x, double y) {
-         _selectionRow = row;
-         _selectionCol = column;
+      private void SelectColor(Color color) {
+         var colorModel = new ColorModel(color);
+
+         Hue = (int) colorModel.Hue;
+
+         UpdateSelection(
+            brightness:    255 - (int) (colorModel.Brightness * 255.0),
+            saturation: (int) (colorModel.Saturation * 255.0),
+            x:      colorModel.Saturation * ActualWidth,
+            y:      ActualHeight - colorModel.Brightness * ActualHeight
+         );
+      }
+
+      private void UpdateSelection(int brightness, int saturation, double x, double y) {
+         _selectedRow = brightness;
+         _selectedColumn = saturation;
 
          Canvas.SetLeft(InnerSelectionEllipse, x - 6.5);
          Canvas.SetTop(InnerSelectionEllipse, y - 6.5);
@@ -176,20 +167,19 @@ namespace MrWorkman.Wpf {
          Canvas.SetTop(OuterSelectionEllipse, y - 7.65);
       }
 
-      private void UpdateSelection(Cell cell, Point point) =>
-         UpdateSelection(cell.Row, cell.Column, point.X, point.Y);
-
       #region Event Handlers
       private void PickerCanvas_OnMouseMove(object sender, MouseEventArgs e) {
          var position = e.GetPosition(sender as IInputElement);
 
          position = GetBoundedMouseCoords(position);
-         var cell = MouseCoordsToCell(position);
 
-         TriggerHoverEvent(this, cell);
+         var saturation = TranslateMouseX(position.X);
+         var brightness = TranslateMouseY(position.Y);
+
+         TriggerHoverEvent(this, GetColorFromCoords(brightness, saturation));
 
          if (_mousePressed) {
-            UpdateSelection(cell, position);
+            UpdateSelection(saturation, brightness, position.X, position.Y);
             TriggerSelectionEvent(this);
          }
       }
@@ -202,9 +192,10 @@ namespace MrWorkman.Wpf {
          _mousePressed = true;
 
          var position = GetBoundedMouseCoords(e.GetPosition(element));
-         var cell = MouseCoordsToCell(position);
+         var saturation = TranslateMouseX(position.X);
+         var brightness = TranslateMouseY(position.Y);
 
-         UpdateSelection(cell, position);
+         UpdateSelection(brightness, saturation, position.X, position.Y);
          TriggerSelectionEvent(this);
       }
 
@@ -215,6 +206,11 @@ namespace MrWorkman.Wpf {
       }
 
       private void PickerCanvas_OnLoaded(object sender, RoutedEventArgs e) {
+         if (!IsVisible) {
+            return;
+         }
+
+         SelectColor(SelectedColor);
          DrawPickerCanvas();
       }
       #endregion
