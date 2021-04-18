@@ -23,9 +23,12 @@ namespace MrWorkman.Wpf {
 
       //private const string EditableTextBoxTemplateName = "PART_EditableTextBox";
       private const string PopupTemplateName = "PICKER_Popup";
-      private const string SwatchesTemplateName = "ColorSwatches";
+      private const string ColorPickerTemplateName = "ColorPicker";
+      private const string HuePickerTemplateName = "HuePicker";
 
       private Popup _dropdownPickerPopup;
+      private ColorPicker _colorPicker;
+      private HuePicker _huePicker;
 
       public static readonly Color DefaultColor = Colors.Black;
 
@@ -104,6 +107,12 @@ namespace MrWorkman.Wpf {
                Mouse.Capture(comboBox, CaptureMode.SubTree);
                comboBox.OnDropDownOpened(EventArgs.Empty);
             }
+
+            var colorPicker = comboBox._colorPicker;
+            if (colorPicker != null) {
+               colorPicker.SelectedColor = (Color) (ColorConverter.ConvertFromString(comboBox.Text ?? "#ff000000") ?? Colors.Black);
+            }
+
          } else {
             if (comboBox.IsKeyboardFocusWithin) {
                comboBox.Focus();
@@ -139,6 +148,28 @@ namespace MrWorkman.Wpf {
          if (_dropdownPickerPopup != null) {
             _dropdownPickerPopup.Closed += OnPopupClosed;
          }
+
+         if (_colorPicker != null) {
+            _colorPicker.ColorSelect = null;
+         }
+
+         _colorPicker = GetTemplateChild(ColorPickerTemplateName) as ColorPicker;
+
+         if (_colorPicker != null) {
+            _colorPicker.ColorSelect += OnColorSelect;
+         }
+
+         if (_huePicker != null) {
+            _huePicker.HueSelect = null;
+         }
+
+         _huePicker = GetTemplateChild(HuePickerTemplateName) as HuePicker;
+
+         if (_huePicker != null) {
+            _huePicker.HueSelect += OnHueSelect;
+         }
+
+
       }
 
       private static void OnLostMouseCapture(object sender, MouseEventArgs e) {
@@ -225,5 +256,17 @@ namespace MrWorkman.Wpf {
       private void OnPopupClosed(object source, EventArgs e) {
          OnDropDownClosed(EventArgs.Empty);
       }
+
+      private void OnColorSelect(object sender, ColorSelectionEventArgs e) {
+         Text = e.Color.ToString();
+         //_huePicker.SelectedHue = _colorPicker.Hue;
+      }
+
+      private void OnHueSelect(object sender, HueSelectionEventArgs e) {
+         //if (_colorPicker != null) {
+         //   _colorPicker.Hue = e.Hue;
+         //}
+      }
+
    }
 }

@@ -37,9 +37,7 @@
                 Height="{Binding ActualHeight, ElementName=_canvas}"
                 MouseMove="_pickerCanvas_OnMouseMove"
                 MouseLeftButtonDown="_pickerCanvas_OnMouseLeftButtonDown"
-                MouseLeftButtonUp="_pickerCanvas_OnMouseLeftButtonUp"
-                Loaded="_pickerCanvas_OnLoaded"
-         />
+                MouseLeftButtonUp="_pickerCanvas_OnMouseLeftButtonUp"/>
       </Canvas>
 
 </UserControl>

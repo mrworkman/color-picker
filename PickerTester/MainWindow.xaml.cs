@@ -58,12 +58,13 @@ namespace PickerTester {
       public void _colorSwatches_OnColorSelected(object sender, ColorSelectionEventArgs e) {
          var colorBytes = new[] { e.Color.R, e.Color.G, e.Color.B };
 
-         ColorConversion.GetHsv(colorBytes, out var H, out _, out _);
+         //ColorConversion.GetHsv(colorBytes, out var H, out _, out _);
+         var hue = (int) new ColorModel(e.Color).Hue;
 
          _colorPicker.SelectedColor = e.Color;
-         _huePicker.SelectedHue = H;
+         _huePicker.SelectedHue = hue;
 
-         _selectedHueLabel.Content = H;
+         _selectedHueLabel.Content = hue;
       }
 
    }

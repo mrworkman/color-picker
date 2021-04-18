@@ -23,7 +23,6 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
 namespace MrWorkman.Wpf {
-   using static ColorConversion;
 
    /// <summary>
    /// Interaction logic for UserControl1.xaml
@@ -64,18 +63,15 @@ namespace MrWorkman.Wpf {
       public Color SelectedColor {
          get => GetColorFromSelectionCoords();
          set {
-            var color = value;
-            var colorBytes = new[] { color.R, color.G, color.B };
+            var colorModel = new ColorModel(value);
 
-            GetHsv(colorBytes, out var H, out var S, out var V);
-
-            Hue = H;
+            Hue = (int) colorModel.Hue;
 
             UpdateSelection(
-               255 - (int) (V * 255.0),
-               (int) (S * 255.0),
-               S * ActualWidth,
-               ActualHeight - V * ActualHeight
+               row:    255 - (int) (colorModel.Brightness * 255.0),
+               column: (int) (colorModel.Saturation * 255.0),
+               x:      colorModel.Saturation * ActualWidth,
+               y:      ActualHeight - colorModel.Brightness * ActualHeight
             );
 
             TriggerSelectionEvent(this);
@@ -127,10 +123,11 @@ namespace MrWorkman.Wpf {
                var saturation = column / (double) GridSize;
                var value = (GridSize - row) / (double) GridSize;
 
-               var bytes = GetRgbBytes(Hue, saturation, value);
-               _pixels[o + 0] = bytes[0];
-               _pixels[o + 1] = bytes[1];
-               _pixels[o + 2] = bytes[2];
+               var color = ColorModel.ComputeColor(Hue, saturation, value);
+
+               _pixels[o + 0] = color.R;
+               _pixels[o + 1] = color.G;
+               _pixels[o + 2] = color.B;
             }
          }
 
@@ -173,7 +170,8 @@ namespace MrWorkman.Wpf {
          Canvas.SetTop(_selectionEllipse2, y - 7.65);
       }
 
-      private void UpdateSelection(Cell cell, Point point) => UpdateSelection(cell.Row, cell.Column, point.X, point.Y);
+      private void UpdateSelection(Cell cell, Point point) =>
+         UpdateSelection(cell.Row, cell.Column, point.X, point.Y);
 
       #region Event Handlers
       private void _pickerCanvas_OnMouseMove(object sender, MouseEventArgs e) {
@@ -210,9 +208,9 @@ namespace MrWorkman.Wpf {
          (sender as IInputElement)?.ReleaseMouseCapture();
       }
 
-      private void _pickerCanvas_OnLoaded(object sender, RoutedEventArgs e) {
-         UpdateSelection(255, 0, 0.0, _pickerCanvas.ActualHeight);
-      }
+      //private void _pickerCanvas_OnLoaded(object sender, RoutedEventArgs e) {
+      //   UpdateSelection(255, 0, 0.0, _pickerCanvas.ActualHeight);
+      //}
       #endregion
 
    }

@@ -60,7 +60,7 @@
       <SubType>Designer</SubType>
     </Page>
     <Compile Include="ColorComboBox.cs" />
-    <Compile Include="ColorConversion.cs" />
+    <Compile Include="ColorModel.cs" />
     <Compile Include="ColorPicker.xaml.cs">
       <DependentUpon>ColorPicker.xaml</DependentUpon>
       <SubType>Code</SubType>

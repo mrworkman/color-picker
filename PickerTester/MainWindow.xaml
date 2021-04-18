@@ -13,8 +13,9 @@
   <Canvas>
     <Wpf:ColorPicker x:Name="_colorPicker"
                        Width="256" Height="256"
-                       Hue="0"
+                       SelectedColor="Red"
                        Canvas.Left="10" Canvas.Top="13"
+                       SnapsToDevicePixels="False"
                        ColorHover="_colorPicker_OnColorHover"
                        ColorSelect="_colorPicker_OnColorSelect" />
 

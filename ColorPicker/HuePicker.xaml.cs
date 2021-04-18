@@ -23,7 +23,6 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
 namespace MrWorkman.Wpf {
-   using static ColorConversion;
 
    /// <summary>
    /// Interaction logic for HueSlider.xaml
@@ -79,10 +78,7 @@ namespace MrWorkman.Wpf {
 
       private int GetHueValueFromRow(int row) => (int) ((double) row / (Rows - 1) * (Degrees - 1));
 
-      private Color GetHueColorFromValue(int hue) {
-         var c = GetRgbBytes(hue, 1.0, 1.0);
-         return Color.FromRgb(c[0], c[1], c[2]);
-      }
+      private Color GetHueColorFromValue(int hue) => ColorModel.ComputeColor(hue, 1.0, 1.0);
 
       private int GetRowFromHueValue(int hue) => (int) ((double) hue / (Degrees - 1) * (Rows - 1));
 
@@ -95,10 +91,10 @@ namespace MrWorkman.Wpf {
 
             var hue = (int) ((double) (Rows - 1 - row) / Rows * Degrees);
 
-            var bytes = GetRgbBytes(hue, 1.0, 1.0);
-            pixels[o + 0] = bytes[0];
-            pixels[o + 1] = bytes[1];
-            pixels[o + 2] = bytes[2];
+            var color = GetHueColorFromValue(hue);
+            pixels[o + 0] = color.R;
+            pixels[o + 1] = color.G;
+            pixels[o + 2] = color.B;
          }
 
          var bitmap = new WriteableBitmap(1, Rows, 96, 96, PixelFormats.Rgb24, null);

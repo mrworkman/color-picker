@@ -32,7 +32,7 @@
   </Style>
 
   <ItemsPanelTemplate x:Key="ColorComboBox.ItemsPanelTemplate">
-    <WrapPanel Orientation="Vertical" Width="310" Height="170"/>
+    <WrapPanel Orientation="Vertical" Height="170" Margin="1,1,3,1"/>
   </ItemsPanelTemplate>
 
   <DataTemplate x:Key="ColorComboBox.ItemTemplate">
@@ -277,8 +277,16 @@
              Placement="Bottom">
 
         <themes:SystemDropShadowChrome x:Name="shadow2" Color="Transparent" MaxHeight="{TemplateBinding MaxDropDownHeight}" MinWidth="{Binding ActualWidth, ElementName=templateRoot}">
-          <Border x:Name="dropDownBorder2" BorderBrush="{DynamicResource {x:Static SystemColors.WindowFrameBrushKey}}" BorderThickness="1" Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}">
-            <local:ColorPicker Width="256" Height="256" SnapsToDevicePixels="False" />
+          <Border x:Name="dropDownBorder2" 
+                  BorderBrush="{DynamicResource {x:Static SystemColors.WindowFrameBrushKey}}" 
+                  BorderThickness="1" 
+                  Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}">
+            
+            <StackPanel Width="300" Height="260" Margin="5" Orientation="Horizontal">
+              <local:ColorPicker Width="256" Height="256" SnapsToDevicePixels="False" />
+              <local:HuePicker Width="37" Height="256" Margin="5,0,0,0"/>
+            </StackPanel>
+            
           </Border>
         </themes:SystemDropShadowChrome>
 
@@ -313,6 +321,17 @@
                     IsChecked="{Binding IsPickerDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
                     Style="{StaticResource ColorComboBoxPickerToggleButton}"
                     />
+
+      <!--<Rectangle x:Name="Swatch"
+                 Grid.Column="0"
+                 Width="14"
+                 Height="14"
+                 Fill="{Binding SelectedItem, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
+                 Margin="4,0,0,0"
+                 HorizontalAlignment="Left" Stroke="Black"
+                 SnapsToDevicePixels="False" />-->
+
+
     </Grid>
     <ControlTemplate.Triggers>
       <Trigger Property="HasDropShadow" SourceName="PART_Popup" Value="true">
@@ -323,9 +342,9 @@
         <Setter Property="Margin" TargetName="shadow2" Value="0,0,5,5"/>
         <Setter Property="Color" TargetName="shadow2" Value="#71000000"/>
       </Trigger>
-      <!--<Trigger Property="HasItems" Value="false">
-        <Setter Property="Height" TargetName="dropDownBorder" Value="95"/>
-      </Trigger>-->
+      <Trigger Property="HasItems" Value="false">
+        <Setter Property="Height" TargetName="dropDownBorder" Value="25"/>
+      </Trigger>
       <MultiTrigger>
         <MultiTrigger.Conditions>
           <Condition Property="IsGrouping" Value="true"/>
@@ -333,10 +352,10 @@
         </MultiTrigger.Conditions>
         <Setter Property="ScrollViewer.CanContentScroll" Value="false"/>
       </MultiTrigger>
-      <!--<Trigger Property="ScrollViewer.CanContentScroll" SourceName="DropDownScrollViewer" Value="false">
+      <Trigger Property="ScrollViewer.CanContentScroll" SourceName="DropDownScrollViewer" Value="false">
         <Setter Property="Canvas.Top" TargetName="opaqueRect" Value="{Binding VerticalOffset, ElementName=DropDownScrollViewer}"/>
         <Setter Property="Canvas.Left" TargetName="opaqueRect" Value="{Binding HorizontalOffset, ElementName=DropDownScrollViewer}"/>
-      </Trigger>-->
+      </Trigger>
     </ControlTemplate.Triggers>
   </ControlTemplate>
   <SolidColorBrush x:Key="TextBox.Static.Background" Color="#FFFFFFFF"/>
@@ -412,8 +431,19 @@
                   BorderThickness="1"
                   Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}">
 
-            <local:ColorPicker Width="256" Height="256" SnapsToDevicePixels="False" />
-
+            <StackPanel Width="300" Height="260" Margin="5" Orientation="Horizontal">
+              <local:ColorPicker x:Name="ColorPicker" 
+                                 Width="256" 
+                                 Height="256" 
+                                 SnapsToDevicePixels="False" />
+              
+              <local:HuePicker x:Name="HuePicker"
+                               Width="37" 
+                               Height="256" 
+                               Margin="5,0,0,0" 
+                               SelectedHue="0"/>
+            </StackPanel>
+            
           </Border>
 
         </themes:SystemDropShadowChrome>
@@ -444,11 +474,12 @@
 
       <Rectangle x:Name="Swatch"
                  Grid.Column="0"
-                 Width="10"
-                 Height="10"
-                 Fill="{Binding SelectedColor, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
-                 Margin="8,0,0,0"
-                 HorizontalAlignment="Left" Stroke="Black">
+                 Width="14"
+                 Height="14"
+                 Fill="{Binding Text, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
+                 Margin="4,0,0,0"
+                 HorizontalAlignment="Left" Stroke="Black"
+                 SnapsToDevicePixels="False">
 
       </Rectangle>
 
@@ -473,9 +504,9 @@
         <Setter Property="Margin" TargetName="shadow" Value="0,0,5,5"/>
         <Setter Property="Color" TargetName="shadow" Value="#71000000"/>
       </Trigger>
-      <!--<Trigger Property="HasItems" Value="false">
-        <Setter Property="Height" TargetName="dropDownBorder" Value="95"/>
-      </Trigger>-->
+      <Trigger Property="HasItems" Value="false">
+        <Setter Property="Height" TargetName="dropDownBorder" Value="25"/>
+      </Trigger>
       <MultiTrigger>
         <MultiTrigger.Conditions>
           <Condition Property="IsGrouping" Value="true"/>
@@ -483,10 +514,10 @@
         </MultiTrigger.Conditions>
         <Setter Property="ScrollViewer.CanContentScroll" Value="false"/>
       </MultiTrigger>
-      <!--<Trigger Property="ScrollViewer.CanContentScroll" SourceName="DropDownScrollViewer" Value="false">
+      <Trigger Property="ScrollViewer.CanContentScroll" SourceName="DropDownScrollViewer" Value="false">
         <Setter Property="Canvas.Top" TargetName="opaqueRect" Value="{Binding VerticalOffset, ElementName=DropDownScrollViewer}"/>
         <Setter Property="Canvas.Left" TargetName="opaqueRect" Value="{Binding HorizontalOffset, ElementName=DropDownScrollViewer}"/>
-      </Trigger>-->
+      </Trigger>
     </ControlTemplate.Triggers>
   </ControlTemplate>
   <Style TargetType="{x:Type local:ColorComboBox}" BasedOn="{StaticResource {x:Type ComboBox}}">
