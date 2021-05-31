@@ -74,27 +74,10 @@ namespace MrWorkman.Wpf {
          }
       }
 
-      private Point GetBoundedMouseCoords(Point p) {
-         double x = p.X, y = p.Y;
-
-         if (x < 0) {
-            x = 0;
-         }
-
-         if (x >= PickerCanvas.ActualWidth) {
-            x = PickerCanvas.ActualWidth - 1;
-         }
-
-         if (y < 0) {
-            y = 0;
-         }
-
-         if (y >= PickerCanvas.ActualHeight) {
-            y = PickerCanvas.ActualHeight - 1;
-         }
-
-         return new Point(x, y);
-      }
+      private Point GetBoundedMouseCoords(Point p) => new Point {
+         X = Math.Max(0.0, Math.Min(PickerCanvas.ActualWidth - 1.0, p.X)),
+         Y = Math.Max(0.0, Math.Min(PickerCanvas.ActualHeight - 1.0, p.Y))
+      };
 
       private Color GetColorFromCoords(int row, int column) => ComputeColor(_hue, row, column);
       private Color GetColorFromSelectionCoords() => GetColorFromCoords(_selectedRow, _selectedColumn);
@@ -149,10 +132,10 @@ namespace MrWorkman.Wpf {
          Hue = (int) colorModel.Hue;
 
          UpdateSelection(
-            brightness:    255 - (int) (colorModel.Brightness * 255.0),
+            brightness: 255 - (int) (colorModel.Brightness * 255.0),
             saturation: (int) (colorModel.Saturation * 255.0),
-            x:      colorModel.Saturation * ActualWidth,
-            y:      ActualHeight - colorModel.Brightness * ActualHeight
+            x:          colorModel.Saturation * ActualWidth,
+            y:          ActualHeight - colorModel.Brightness * ActualHeight
          );
       }
 
@@ -179,7 +162,7 @@ namespace MrWorkman.Wpf {
          TriggerHoverEvent(this, GetColorFromCoords(brightness, saturation));
 
          if (_mousePressed) {
-            UpdateSelection(saturation, brightness, position.X, position.Y);
+            UpdateSelection(brightness, saturation, position.X, position.Y);
             TriggerSelectionEvent(this);
          }
       }

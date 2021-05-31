@@ -44,7 +44,7 @@
     <Setter Property="Margin" Value="0"/>
     <Setter Property="BorderThickness" Value="0.5"/>
   </Style>
-  
+
   <LinearGradientBrush x:Key="ComboBox.Static.Background" EndPoint="0,1" StartPoint="0,0">
     <GradientStop Color="#FFF0F0F0" Offset="0.0"/>
     <GradientStop Color="#FFE5E5E5" Offset="1.0"/>
@@ -277,16 +277,16 @@
              Placement="Bottom">
 
         <themes:SystemDropShadowChrome x:Name="shadow2" Color="Transparent" MaxHeight="{TemplateBinding MaxDropDownHeight}" MinWidth="{Binding ActualWidth, ElementName=templateRoot}">
-          <Border x:Name="dropDownBorder2" 
-                  BorderBrush="{DynamicResource {x:Static SystemColors.WindowFrameBrushKey}}" 
-                  BorderThickness="1" 
+          <Border x:Name="dropDownBorder2"
+                  BorderBrush="{DynamicResource {x:Static SystemColors.WindowFrameBrushKey}}"
+                  BorderThickness="1"
                   Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}">
-            
+
             <StackPanel Width="300" Height="260" Margin="5" Orientation="Horizontal">
               <local:ColorPicker Width="256" Height="256" SnapsToDevicePixels="False" />
               <local:HuePicker Width="37" Height="256" Margin="5,0,0,0"/>
             </StackPanel>
-            
+
           </Border>
         </themes:SystemDropShadowChrome>
 
@@ -432,18 +432,18 @@
                   Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}">
 
             <StackPanel Width="300" Height="260" Margin="5" Orientation="Horizontal">
-              <local:ColorPicker x:Name="ColorPicker" 
-                                 Width="256" 
-                                 Height="256" 
+              <local:ColorPicker x:Name="ColorPicker"
+                                 Width="256"
+                                 Height="256"
                                  SnapsToDevicePixels="False" />
-              
+
               <local:HuePicker x:Name="HuePicker"
-                               Width="37" 
-                               Height="256" 
-                               Margin="5,0,0,0" 
+                               Width="37"
+                               Height="256"
+                               Margin="5,0,0,0"
                                SelectedHue="0"/>
             </StackPanel>
-            
+
           </Border>
 
         </themes:SystemDropShadowChrome>

@@ -109,8 +109,21 @@ namespace MrWorkman.Wpf {
             }
 
             var colorPicker = comboBox._colorPicker;
+            var huePicker = comboBox._huePicker;
+
             if (colorPicker != null) {
-               colorPicker.SelectedColor = (Color) (ColorConverter.ConvertFromString(comboBox.Text ?? "#ff000000") ?? Colors.Black);
+               if (String.IsNullOrEmpty(comboBox.Text)) {
+                  colorPicker.SelectedColor = Colors.Black;
+               } else {
+                  try {
+                     colorPicker.SelectedColor =
+                        (Color) (ColorConverter.ConvertFromString(comboBox.Text) ?? Colors.Black);
+                  } catch (FormatException) {
+                     colorPicker.SelectedColor = Colors.Black;
+                  }
+               }
+
+               huePicker.SelectedHue = (int) colorPicker.SelectedColor.GetHue();
             }
 
          } else {
@@ -263,9 +276,9 @@ namespace MrWorkman.Wpf {
       }
 
       private void OnHueSelect(object sender, HueSelectionEventArgs e) {
-         //if (_colorPicker != null) {
-         //   _colorPicker.Hue = e.Hue;
-         //}
+         if (_colorPicker != null) {
+            _colorPicker.Hue = e.Hue;
+         }
       }
 
    }

@@ -59,7 +59,7 @@ namespace PickerTester {
          var colorBytes = new[] { e.Color.R, e.Color.G, e.Color.B };
 
          //ColorConversion.GetHsv(colorBytes, out var H, out _, out _);
-         var hue = (int) new ColorModel(e.Color).Hue;
+         var hue = (int) e.Color.GetHue();
 
          ColorPicker.SelectedColor = e.Color;
          _huePicker.SelectedHue = hue;

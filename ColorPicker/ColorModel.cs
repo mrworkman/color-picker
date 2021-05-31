@@ -164,5 +164,10 @@ namespace MrWorkman.Wpf {
 
                                          // i.e. CMax != 0.
       private double ComputeSaturation() => Math.Abs(CMax) > Tolerance ? Delta / CMax : 0;
+
+   }
+
+   public static class ExtensionMethods {
+      public static double GetHue(this Color color) => new ColorModel(color).Hue;
    }
 }
