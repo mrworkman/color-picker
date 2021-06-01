@@ -329,7 +329,7 @@
                  Fill="{Binding SelectedItem, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
                  Margin="4,0,0,0"
                  HorizontalAlignment="Left" Stroke="Black"
-                 SnapsToDevicePixels="False" />-->
+                 SnapsToDevicePixels="True" />-->
 
 
     </Grid>
@@ -477,9 +477,10 @@
                  Width="14"
                  Height="14"
                  Fill="{Binding Text, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
-                 Margin="4,0,0,0"
+                 Margin="4,3,0,2"
                  HorizontalAlignment="Left" Stroke="Black"
-                 SnapsToDevicePixels="False">
+                 SnapsToDevicePixels="True"
+                 VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
 
       </Rectangle>
 

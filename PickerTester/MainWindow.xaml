@@ -9,7 +9,7 @@
         xmlns:system="clr-namespace:System;assembly=mscorlib"
         x:Class="PickerTester.MainWindow"
         mc:Ignorable="d"
-        Title="MainWindow" Height="364.2" Width="667.2" WindowStartupLocation="CenterScreen">
+        Title="MainWindow" Height="377.2" Width="667.2" WindowStartupLocation="CenterScreen">
   <Canvas>
     <Wpf:ColorPicker x:Name="ColorPicker"
                        Width="256" Height="256"
@@ -112,7 +112,7 @@
       <SolidColorBrush>#ff006600</SolidColorBrush>
     </Wpf:ColorComboBox>
 
-    <Wpf:ColorComboBox Canvas.Left="10" Canvas.Top="302" IsEditable="True" Width="138" FontFamily="Consolas">
+    <Wpf:ColorComboBox Canvas.Left="10" Canvas.Top="302" IsEditable="True" Width="138" FontFamily="Consolas" SelectedColor="Bisque" Height="31">
       <SolidColorBrush>#ffffffff</SolidColorBrush>
       <SolidColorBrush>#ffadadad</SolidColorBrush>
       <SolidColorBrush>#ff828282</SolidColorBrush>

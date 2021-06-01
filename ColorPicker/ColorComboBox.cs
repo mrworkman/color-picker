@@ -32,6 +32,11 @@ namespace MrWorkman.Wpf {
 
       public static readonly Color DefaultColor = Colors.Black;
 
+      public ColorComboBox() {
+         // Change the default alignment from `Top` to `Center`.
+         SetValue(VerticalContentAlignmentProperty, VerticalAlignment.Center);
+      }
+
       static ColorComboBox() {
          DefaultStyleKeyProperty.OverrideMetadata(typeof(ColorComboBox),
             new FrameworkPropertyMetadata(typeof(ColorComboBox)));
@@ -44,7 +49,6 @@ namespace MrWorkman.Wpf {
 
          //EventManager.RegisterClassHandler(typeof(ToggleButton),
          //   Mouse.MouseDownEvent, new MouseButtonEventHandler(OnMouseButtonDown), true);
-
       }
 
       public static readonly DependencyProperty IsPickerDropDownOpenProperty = DependencyProperty.Register(
@@ -74,7 +78,11 @@ namespace MrWorkman.Wpf {
       [Browsable(true)]
       public Brush SelectedColor {
          get => (SolidColorBrush) GetValue(SelectedColorProperty);
-         set => SetValue(SelectedColorProperty, value);
+         set {
+            SetValue(SelectedColorProperty, value);
+
+            Text = value.ToString();
+         }
       }
 
       private void Close() {
@@ -271,8 +279,9 @@ namespace MrWorkman.Wpf {
       }
 
       private void OnColorSelect(object sender, ColorSelectionEventArgs e) {
-         Text = e.Color.ToString();
-         //_huePicker.SelectedHue = _colorPicker.Hue;
+         if (_dropdownPickerPopup.IsOpen) {
+            Text = e.Color.ToString();
+         }
       }
 
       private void OnHueSelect(object sender, HueSelectionEventArgs e) {
